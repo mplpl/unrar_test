@@ -8,23 +8,29 @@ EXPECTED_DIR="expected"
 TMP_DIR="results"
 UNRAR = "unrar"
 
-def call_unpack(test_file, fname, unpack_args):
+
+def test_dir(test_id):
+	return "test_%02d"%test_id
+	
+	
+def call_unpack(test_id, unpack_args):
 	sys.stdout.write('.')
 	sys.stdout.flush()
-	log = os.path.join(TMP_DIR, fname)
-	if not os.path.exists(log):
-		os.mkdir(log)
-	log = os.path.join(log, "test.log")
-	cmd = ["unrar", unpack_args, TMP_DIR, ">%s"%log]
+	test_d = os.path.join(TMP_DIR, test_dir(test_id))
+	if not os.path.exists(test_d):
+		os.mkdir(test_d)
+	log = os.path.join(test_d, "test.log")
+	cmd = [UNRAR, unpack_args, test_d, ">%s"%log]
 	#print(" ".join(cmd))
 	return os.system(" ".join(cmd))
-	
 
-def compare(fname):
+
+def compare(test_id):
 	sys.stdout.write('.')
 	sys.stdout.flush()
 
-	cmd = ["diff", "-r", "--exclude=test.log", os.path.join(EXPECTED_DIR, fname), os.path.join(TMP_DIR, fname)]
+	cmd = ["diff", "-r", "--exclude=test.log", os.path.join(
+		EXPECTED_DIR, test_dir(test_id)), os.path.join(TMP_DIR, test_dir(test_id))]
 	ret = os.system(" ".join(cmd))
 	if ret != 0:
 		print("Error in test (ret code %s)" % ret)
@@ -33,11 +39,11 @@ def compare(fname):
 	return ret
 
 
-def clean_up(fname):
+def clean_up(test_id):
 	sys.stdout.write('.')
 	sys.stdout.flush()
 	try:
-		shutil.rmtree(os.path.join(TMP_DIR, fname), ignore_errors=True)
+		shutil.rmtree(os.path.join(TMP_DIR, test_dir(test_id)), ignore_errors=True)
 	except Exception as e:
 		print(e)
 	return 0;
@@ -56,24 +62,18 @@ def make_static_file():
 		open(os.path.join(TMP_DIR, "2.txt"), "a").close()	
 
 
-def run_test(test_file, unpack_args, desc):
-	sys.stdout.write("\nTesting %s" % test_file)
-	#sys.stdout.write("\n%s [%s]" % (desc, test_file))
+def run_test(test_id, unpack_args, desc):
+	sys.stdout.write("\nTest %s" % test_id)
 	sys.stdout.flush()
 
-	if not os.path.exists(test_file):
-		print("File %s not found\n" % test_file)
-
-	fname, fext = os.path.splitext(os.path.basename(test_file))
-
-	if call_unpack(test_file, fname, unpack_args) != 0:
+	if call_unpack(test_id, unpack_args) != 0:
 		print(" [unpact error] ")
 		print("\nTest decription: %s" % desc)
 		return 1
-	ret = compare(fname)
+	ret = compare(test_id)
 
 	if ret == 0:
-		if clean_up(fname) !=0:
+		if clean_up(test_id) !=0:
 			print("\nTest decription: %s" % desc)
 			return 100
 		else:
@@ -121,9 +121,10 @@ if __name__ == "__main__":
 	if args.go:
 		i = 0
 		make_static_file()
+		test_id = 1
 		for test, desc in tests:
-			test_file = test.split()[-1]
-			run_test(test_file, test, desc)
+			run_test(test_id, test, desc)
+			test_id += 1
 		else:
 			print("\nAll Done\n")
 	else:

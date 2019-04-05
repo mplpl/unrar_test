@@ -46,3 +46,9 @@
 45) with symlink to a file with national characters (WinRAR)
 46) with symlink to outside of archive and with national characters (WinRAR)
 47) with symlink to a target with national characters make with rar3
+48) with filter in filelist
+49) with filter in -n@
+49) with filter in -x@
+50) with filter in -x@ and utf-8 filelist (w/ -sc)
+51) with filter in -x@ and utf-16 filelist (w/ -sc)
+52) with filter in -x@ and utf-16 filelist (w/o -sc)
