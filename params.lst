@@ -48,7 +48,6 @@ x -y unrar_test_47.rar
 x -y unrar_test_13.rar @unrar_test_13_excl_iso8859-2.lst
 x -y -n@unrar_test_13_excl_iso8859-2.lst unrar_test_13.rar
 x -y -x@unrar_test_13_excl_iso8859-2.lst unrar_test_13.rar
-x -y -sclf -x@unrar_test_13_excl_iso8859-2.lst unrar_test_13.rar
-x -y -sclf -x@unrar_test_13_excl_utf8.lst unrar_test_13.rar
-x -y -sclu -x@unrar_test_13_excl_utf16.lst unrar_test_13.rar
+x -y -scfl -x@unrar_test_13_excl_utf8.lst unrar_test_13.rar
+x -y -scul -x@unrar_test_13_excl_utf16.lst unrar_test_13.rar
 x -y -x@unrar_test_13_excl_utf16.lst unrar_test_13.rar
