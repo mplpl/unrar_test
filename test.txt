@@ -52,3 +52,6 @@
 50) with filter in -x@ and utf-8 filelist (w/ -sc)
 51) with filter in -x@ and utf-16 filelist (w/ -sc)
 52) with filter in -x@ and utf-16 filelist (w/o -sc)
+53) Windows SFX archive
+54) Linux SFX archive
+55) Linux SFX archive with file name with national characters
