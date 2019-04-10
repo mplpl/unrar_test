@@ -2,7 +2,6 @@
 import os
 import shutil
 import sys
-import argparse
 
 EXPECTED_DIR="expected"
 TMP_DIR="results"
@@ -44,7 +43,7 @@ def clean_up(test_id):
 	sys.stdout.flush()
 	try:
 		shutil.rmtree(os.path.join(TMP_DIR, test_dir(test_id)), ignore_errors=True)
-	except Exception as e:
+	except Exception, e:
 		print(e)
 	return 0;
 	
@@ -84,13 +83,14 @@ def run_test(test_id, unpack_args, desc):
 
 if __name__ == "__main__":
 
-	parser = argparse.ArgumentParser(description="Test runner")
-	parser.add_argument("--go", action="store_true", help="run tests")
-	parser.add_argument("--tmp_dir", help="temp directory when files will be unpacked - default is current dir")
-	args = parser.parse_args()
-	
+	#parser = argparse.ArgumentParser(description="Test runner")
+	#parser.add_argument("--go", action="store_true", help="run tests")
+	#parser.add_argument("--tmp_dir", help="temp directory when files will be unpacked - default is current dir")
+	#args = parser.parse_args()
+
 	to_test = []
-	with open("params.lst") as f:
+	f = open("params.lst")
+	if f:
 		line = f.readline()
 		while (line):
 			if line.strip():
@@ -98,7 +98,8 @@ if __name__ == "__main__":
 			line = f.readline()
 			
 	test_desc = []
-	with open("test.txt") as f:
+	f=open("test.txt")
+	if f:
 		line = f.readline()
 		while (line):
 			if line.strip():
@@ -109,7 +110,7 @@ if __name__ == "__main__":
 	
 	print("Found %d tests" % len(tests))
 
-	if args.tmp_dir:
+	if False: #args.tmp_dir:
 		TMP_DIR=args.tmp_dir
 		if not os.path.exists(TMP_DIR):
 			print("%s does not exist\n" % TMP_DIR)
@@ -118,7 +119,7 @@ if __name__ == "__main__":
 		if not os.path.exists(TMP_DIR):
 			os.mkdir(TMP_DIR)
 		
-	if args.go:
+	if True: #args.go:
 		i = 0
 		make_static_file()
 		test_id = 1
