@@ -16,10 +16,10 @@ x -y unrar_test_15.rar
 x -y unrar_test_16.rar
 x -y unrar_test_17.part1.rar
 x -y unrar_test_18.rar
-x -y unrar_test_19.rar
+x -y -p¿ó³æ unrar_test_19.rar
 x -y unrar_test_20.rar
 x -y unrar_test_21.rar
-x -y unrar_test_22.rar
+x -y -p¿ó³æ unrar_test_22.rar
 x -y unrar_test_23.rar
 x -y unrar_test_24.rar
 x -y -ola unrar_test_25.rar
