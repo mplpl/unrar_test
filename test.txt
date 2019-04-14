@@ -48,10 +48,10 @@
 47) with symlink to a target with national characters make with rar3
 48) with filter in filelist
 49) with filter in -n@
-49) with filter in -x@
-50) with filter in -x@ and utf-8 filelist (w/ -sc)
-51) with filter in -x@ and utf-16 filelist (w/ -sc)
-52) with filter in -x@ and utf-16 filelist (w/o -sc)
-53) Windows SFX archive
-54) Linux SFX archive
-55) Linux SFX archive with file name with national characters
+50) with filter in -x@
+51) with filter in -x@ and utf-8 filelist (w/ -sc)
+52) with filter in -x@ and utf-16 filelist (w/ -sc)
+53) with filter in -x@ and utf-16 filelist (w/o -sc)
+54) Windows SFX archive
+55) Linux SFX archive
+56) Linux SFX archive with file name with national characters
