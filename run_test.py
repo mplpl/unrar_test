@@ -1,3 +1,4 @@
+# coding=ISO-8859-2
 
 import os
 import shutil
@@ -59,6 +60,8 @@ def make_static_file():
 		os.mkdir(TMP_DIR)
 	if not os.path.exists(os.path.join(TMP_DIR, "2.txt")):
 		open(os.path.join(TMP_DIR, "2.txt"), "a").close()	
+	if not os.path.exists(os.path.join(TMP_DIR, "±êæ¿.jpeg")):
+		open(os.path.join(TMP_DIR, "±êæ¿.jpeg"), "a").close()
 
 
 def run_test(test_id, unpack_args, desc):

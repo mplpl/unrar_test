@@ -43,7 +43,7 @@ x -y unrar_test_42.rar
 x -y unrar_test_43.rar
 x -y unrar_test_44.rar
 x -y unrar_test_45.rar
-x -y unrar_test_46.rar
+x -y -ola unrar_test_46.rar
 x -y unrar_test_47.rar
 x -y unrar_test_13.rar @unrar_test_13_excl_iso8859-2.lst
 x -y -n@unrar_test_13_excl_iso8859-2.lst unrar_test_13.rar
