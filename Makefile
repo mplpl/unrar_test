@@ -87,7 +87,7 @@ prepare:
 	@cd expected/test_38; makelink 0796.jpg IMG_0796.jpeg $(SOFT)
 
 	@echo test_40
-	@cd expected/test_40; makelink kat_2 kat $(SOFT)
+	@cd expected/test_40; makelink kat_2 kat $(SOFT) force
 
 	@echo test_42
 	@cd expected/test_42; makelink ¿ó³æ_2 ¿ó³æ $(SOFT)
