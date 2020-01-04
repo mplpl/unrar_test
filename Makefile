@@ -24,8 +24,8 @@ DEVNULL=nil:
 endif
 
 ifeq ($(PLATFORM),AROS)
-SOFT=soft
-HARD=
+SOFT=
+HARD=hard
 DEVNULL=/dev/null
 endif
 

@@ -22,7 +22,7 @@ def call_unpack(test_id, unpack_args):
    log = os.path.join(test_d, "test.log")
    cmd = [UNRAR, unpack_args, test_d, ">%s"%log]
    #print(" ".join(cmd))
-   return os.system(" ".join(cmd))
+   return os.system("sh -c '" + " ".join(cmd) + "'>%s"%log)
 
 
 def compare(test_id):
