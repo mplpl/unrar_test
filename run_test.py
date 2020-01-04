@@ -7,6 +7,7 @@ import sys
 EXPECTED_DIR="expected"
 TMP_DIR="results"
 UNRAR = "unrar"
+IS_AROS = 0
 
 
 def test_dir(test_id):
@@ -20,9 +21,12 @@ def call_unpack(test_id, unpack_args):
    if not os.path.exists(test_d):
       os.mkdir(test_d)
    log = os.path.join(test_d, "test.log")
-   cmd = [UNRAR, unpack_args, test_d, ">%s"%log]
+   cmd = [UNRAR, unpack_args, test_d]
    #print(" ".join(cmd))
-   return os.system("sh -c '" + " ".join(cmd) + "'>%s"%log)
+   if IS_AROS:
+      return os.system("sh -c '" + " ".join(cmd) + "' >%s"%log)
+   else:
+      return os.system(" ".join(cmd) + ">%s"%log)
 
 
 def compare(test_id):
@@ -106,6 +110,12 @@ if __name__ == "__main__":
 
 
    os.system("version %s\n\n" % UNRAR);
+
+   try:
+      if os.uname()[0] == "AROS":
+        IS_AROS = 1
+   except:
+      IS_AROS = 0
 
    to_test = []
    f = open("tests/params.lst")
