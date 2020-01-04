@@ -90,9 +90,25 @@ if __name__ == "__main__":
 	#parser.add_argument("--go", action="store_true", help="run tests")
 	#parser.add_argument("--tmp_dir", help="temp directory when files will be unpacked - default is current dir")
 	#args = parser.parse_args()
+	
+	if len(sys.argv) != 2:
+		print("python run_test.py [path_to_unrar]")
+		exit(1)
+	
+	if os.path.exists(sys.argv[1]):
+		UNRAR = sys.argv[1]
+		print("Using unrar command: %s" % UNRAR)
+		
+	else:
+		print("%s not found" % sys.argv[1])
+		print("python run_test.py [path_to_unrar]")
+		exit(2)
+
+
+	os.system("version %s\n\n" % UNRAR);
 
 	to_test = []
-	f = open("params.lst")
+	f = open("tests/params.lst")
 	if f:
 		line = f.readline()
 		while (line):
@@ -101,7 +117,7 @@ if __name__ == "__main__":
 			line = f.readline()
 			
 	test_desc = []
-	f=open("test.txt")
+	f=open("tests/test.txt")
 	if f:
 		line = f.readline()
 		while (line):
@@ -113,26 +129,19 @@ if __name__ == "__main__":
 	
 	print("Found %d tests" % len(tests))
 
-	if False: #args.tmp_dir:
-		TMP_DIR=args.tmp_dir
-		if not os.path.exists(TMP_DIR):
-			print("%s does not exist\n" % TMP_DIR)
-			exit(1)
-	else:
-		if not os.path.exists(TMP_DIR):
-			os.mkdir(TMP_DIR)
+	
+	if not os.path.exists(TMP_DIR):
+		os.mkdir(TMP_DIR)
 		
-	if True: #args.go:
-		i = 0
-		make_static_file()
-		test_id = 1
-		for test, desc in tests:
-			run_test(test_id, test, desc)
-			test_id += 1
-		else:
-			print("\nAll Done\n")
+	i = 0
+	make_static_file()
+	test_id = 1
+	for test, desc in tests:
+		run_test(test_id, test, desc)
+		test_id += 1
 	else:
-		print("\nuse '--go' to run tests\n")
+		print("\nAll Done\n")
+
 
 
 
