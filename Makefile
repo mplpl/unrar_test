@@ -81,7 +81,7 @@ prepare:
 
 	@echo test_32
 	@makedir expected/test_32
-	@cd expected/test_32; makelink tmp :tmp $(SOFT)
+	@cd expected/test_32; makelink tmp :tmp $(SOFT) force
 
 	@echo test_38
 	@cd expected/test_38; makelink 0796.jpg IMG_0796.jpeg $(SOFT)
