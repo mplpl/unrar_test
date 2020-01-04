@@ -90,7 +90,7 @@ prepare:
 	@cd expected/test_40; makelink kat_2 kat $(SOFT) force
 
 	@echo test_42
-	@cd expected/test_42; makelink ¿ó³æ_2 ¿ó³æ $(SOFT)
+	@cd expected/test_42; makelink ¿ó³æ_2 ¿ó³æ $(SOFT) force
 
 	@echo test_45
 	@cd expected/test_45; makelink ±êæ¿_3.jpg ±êæ¿.jpeg $(SOFT)
