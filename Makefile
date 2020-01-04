@@ -13,21 +13,26 @@ endif
 ifeq ($(PLATFORM),MorphOS)
 SOFT=
 HARD=hard
+DEVNULL=/dev/null
 endif
 
 ifeq ($(PLATFORM),AmigaOS4)
 SOFT=
 HARD=hard
+SHELL=sh
+DEVNULL=nil:
 endif
 
 ifeq ($(PLATFORM),AROS)
 SOFT=soft
 HARD=
+DEVNULL=/dev/null
 endif
 
 ifeq ($(PLATFORM),AmigaOS3)
 SOFT=soft
 HARD=
+DEVNULL=/dev/null
 endif
 
 
@@ -123,7 +128,7 @@ prepare:
 	-@cd expected/test_44; makelink ±êæ¿_2.jpg ±êæ¿.jpeg $(HARD)
 	
 	@echo Done
-	@delete unpack_expected.log >/dev/null
+	@delete unpack_expected.log >$(DEVNULL)
 
 clean:
 	-@rm -rf expected results 
