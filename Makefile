@@ -36,10 +36,18 @@ test:
 	@echo unrar to test is not set
 	@echo call: make test UNRAR=path_of_unrar_to_test
 else
+
+ifeq ($(PLATFORM),AmigaOS3)
+test:
+	setenv RAR_CODEPAGE=ISO-8859-2
+	@python run_test.py $(UNRAR)
 	
+else
+		
 test:
 	@python run_test.py $(UNRAR)
 	
+endif
 endif
 
 prepare:

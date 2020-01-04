@@ -29,7 +29,7 @@ def compare(test_id):
 	sys.stdout.write('.')
 	sys.stdout.flush()
 
-	cmd = ["diff", "-r", "--exclude=test.log", os.path.join(
+	cmd = ["gg:bin/diff", "-r", "--exclude=test.log", os.path.join(
 		EXPECTED_DIR, test_dir(test_id)), os.path.join(TMP_DIR, test_dir(test_id))]
 	ret = os.system(" ".join(cmd))
 	if ret != 0:
@@ -43,7 +43,7 @@ def clean_up(test_id):
 	sys.stdout.write('.')
 	sys.stdout.flush()
 	try:
-		shutil.rmtree(os.path.join(TMP_DIR, test_dir(test_id)), ignore_errors=True)
+		shutil.rmtree(os.path.join(TMP_DIR, test_dir(test_id)), ignore_errors=1)
 	except Exception, e:
 		print(e)
 	return 0;
