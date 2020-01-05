@@ -26,7 +26,7 @@ def call_unpack(test_id, unpack_args):
    if IS_AROS:
       return os.system("sh -c '" + " ".join(cmd) + "' >%s"%log)
    else:
-      return os.system(" ".join(cmd) + ">%s"%log)
+      return os.system(" ".join(cmd) + " >%s"%log)
 
 
 def compare(test_id):
