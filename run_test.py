@@ -3,6 +3,7 @@
 import os
 import shutil
 import sys
+import time
 
 EXPECTED_DIR="expected"
 TMP_DIR="results"
@@ -147,11 +148,22 @@ if __name__ == "__main__":
    i = 0
    make_static_file()
    test_id = 1
+   success = 0
+   failures = 0
+   start_time = time.time()
    for test, desc in tests:
-      run_test(test_id, test, desc)
+      res = run_test(test_id, test, desc)
+      if res == 0:
+         success += 1
+      else:
+         failures += 1	  
       test_id += 1
-   else:
-      print("\nAll Done\n")
+   
+   
+   print("\nDone\n")
+   print("Tests successful: %d\n"%success)
+   print("Tests failed: %d\n"%failures)
+   print("Tests time: %ds\n" % (time.time() - start_time))
 
 
 

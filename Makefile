@@ -13,26 +13,22 @@ endif
 ifeq ($(PLATFORM),MorphOS)
 SOFT=
 HARD=hard
-DEVNULL=/dev/null
 endif
 
 ifeq ($(PLATFORM),AmigaOS4)
 SOFT=
 HARD=hard
 SHELL=sh
-DEVNULL=nil:
 endif
 
 ifeq ($(PLATFORM),AROS)
 SOFT=
 HARD=hard
-DEVNULL=/dev/null
 endif
 
 ifeq ($(PLATFORM),AmigaOS3)
 SOFT=soft
 HARD=
-DEVNULL=/dev/null
 endif
 
 
