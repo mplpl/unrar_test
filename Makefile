@@ -49,15 +49,15 @@ test:
 	
 else
 		
-test:
-	@python run_test.py $(UNRAR)
+test:	
+	@RAR_CODEPAGE=ISO-8859-2 python run_test.py $(UNRAR)
 	
 endif
 endif
 
 prepare:
 	@echo Deleting exising expected directory
-	-@delete expected all >unpack_expected.log
+	-@rm -rf expected >unpack_expected.log
 
 	@echo Unpacking expected.lha
 	@lha x expected.lha >>unpack_expected.log
@@ -128,9 +128,10 @@ prepare:
 	-@cd expected/test_44; makelink ±êæ¿_2.jpg ±êæ¿.jpeg $(HARD)
 	
 	@echo Done
-	@delete unpack_expected.log >$(DEVNULL)
+	-@rm -f unpack_expected.log
 
 clean:
-	-@rm -rf expected results 
+	-@rm -rf expected 
+	-@rm -rf results 
   
 .PHONY: test prepare clean

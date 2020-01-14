@@ -109,7 +109,8 @@ if __name__ == "__main__":
       exit(2)
 
 
-   os.system("version %s\n\n" % UNRAR);
+   os.system("version %s\n\n" % UNRAR)
+   print("Codepage %s\n\n" % os.getenv("RAR_CODEPAGE"))
 
    try:
       if os.uname()[0] == "AROS":
