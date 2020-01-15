@@ -7,7 +7,7 @@ This package contains a set of test rar files with various content (files, direc
 * AmigaOS3
 
 In all the cases, the following software has to be installed:
-* GNU make, diff, cp, rm
+* GNU make, GNU diff, sh, cp, rm, mkdir
 * lha
 * python 2
 
