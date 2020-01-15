@@ -11,21 +11,21 @@ In all the cases, the following software has to be installed:
 * lha
 * python 2
 
-Running tests
+# Running tests
 
 Before running tests, 'expected' content needs to be created. That basically means unpacking expected.lha package and recreating soft and hard links. To do it, you call:
 
-make prepare
+`make prepare`
 
 If that command fails on making soft or hard links, that typically means that file system does not support the links. It is not recommented to move on - rather find a different partition that will support links and copy entire package there. A RAM disk can be a candidate.
 
 Next, in order to run actual tests, call:
 
-make UNRAR=path_to_unrar
+`make UNRAR=path_to_unrar`
 
 where path_to_unrar is given in Amiga way, for instance:
 
-make UNRAR=/unrar_amiga/unrar
+`make UNRAR=/unrar_amiga/unrar`
 
 will use unrar command from unrar_amiga at the same level as current dir.
 
