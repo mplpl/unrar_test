@@ -49,10 +49,18 @@ Next, in order to run actual tests, call:
 
 ```make UNRAR=path_to_unrar```
 
-where path_to_unrar is given in Amiga way, for instance:
+For MorphOS and  AmigaOS path_to_unrar should be given in Amiga way for instance:
 
 ```make UNRAR=/unrar_amiga/unrar```
 
-will use unrar command from unrar_amiga at the same level as current dir.
+In case of AROS, it is the best to give absolute version of Unix path, for instance:
+
+```make UNRAR=/home/documents/unrar_amiga/unrar```
+
+will use unrar command from home:documents/unrar_amiga directory.
 
 And that's it!
+
+The command will run all the tests and will show you execution progress and status of each test. 
+At the end, a sort summary is shown.
+
