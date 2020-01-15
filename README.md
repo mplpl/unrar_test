@@ -1,6 +1,30 @@
 # Automatic black-box testing suite for unrar_amiga
 
-This package contains a set of test rar files with various content (files, directories, links, references) created using rar3 and rar5 on MacOS and Windows. Some archives are encrypted, some other contains items with national characters in names. In addition a testing scripts are included for making it easy to run the package on Amiga operating systems:
+This package contains a set of test rar files with various content as well as test script. 
+In total there are more than 50 tests, including test for extracting from:
+* archives with files and directories
+* archives with excrypted files
+* archives with encrypted headers
+* archives with comments
+* archives with files packed with absolute path
+* archives with multiple versions of the same file
+* archives with symbolic and hard links
+* archives with identical files stored as rar references
+* archives with NTFS junction points
+* archives with unix owner and group stored
+* archives with files, directories and links having national characters in their names
+* archives with password containing national characters
+* archives with comment containing national characters
+* extracting from archives using filters in filelist using file names with national characters
+* multivolume archives
+* locked archives
+* Linux and Windows SFX archives
+* archives created on MacOS using rar5, rar5 but using compression v4 and rar3 
+* archives created on Windows using WinRAR
+
+## Requirements
+
+You can runs the test package on one of the following environments:
 * MorphOS 3.12
 * AmigaOS 4.1
 * AROS (i386)
@@ -10,6 +34,8 @@ In all the cases, the following software has to be installed:
 * GNU make, GNU diff, sh, cp, rm, mkdir
 * lha
 * python 2
+
+It is also required, that files system on which this package is stored, which is also the filesystem where tests files will be created, supports soft and hard links. For instance, SFS does NOT support hard links.
 
 ## Running tests
 
