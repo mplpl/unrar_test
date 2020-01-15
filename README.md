@@ -1,6 +1,8 @@
 # Automatic black-box testing suite for unrar_amiga
 
 This package contains a set of test rar files with various content as well as test script. 
+The package was made to standardize and simplify tests of software from this repo: https://github.com/mplpl/unrar_amiga
+
 In total there are more than 50 tests, including test for extracting from:
 * archives with files and directories
 * archives with excrypted files
