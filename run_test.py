@@ -72,6 +72,8 @@ def make_static_file():
 def clean_up_tests():
   if os.path.exists("tests/unrar_test_57.part2.rar"):
     os.remove("tests/unrar_test_57.part2.rar")
+  if os.path.exists("tests/unrar_test_58.part2.rar"):
+    os.remove("tests/unrar_test_58.part2.rar")
     
     
 def run_test(test_id, unpack_args, desc):
