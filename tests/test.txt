@@ -55,3 +55,4 @@
 54) Windows SFX archive
 55) Linux SFX archive
 56) Linux SFX archive with file name with national characters
+57) Multivolume rar3 archive with a missing volume and recovery volume

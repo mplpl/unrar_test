@@ -54,3 +54,4 @@ x -y -x@tests/unrar_test_13_excl_utf16.lst tests/unrar_test_13.rar
 x -y tests/unrar_test_54.exe
 x -y tests/unrar_test_55.sfx
 x -y tests/unrar_test_56.sfx
+x -y tests/unrar_test_57.part1.rar

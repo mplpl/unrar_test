@@ -69,6 +69,11 @@ def make_static_file():
       open(os.path.join(TMP_DIR, "±êæ¿.jpeg"), "a").close()
 
 
+def clean_up_tests():
+  if os.path.exists("tests/unrar_test_57.part2.rar"):
+    os.remove("tests/unrar_test_57.part2.rar")
+    
+    
 def run_test(test_id, unpack_args, desc):
    sys.stdout.write("\nTest %s" % test_id)
    sys.stdout.flush()
@@ -147,6 +152,7 @@ if __name__ == "__main__":
       
    i = 0
    make_static_file()
+   clean_up_tests()
    test_id = 1
    success = 0
    failures = 0
