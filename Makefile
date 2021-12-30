@@ -10,6 +10,9 @@ PLATFORM=AmigaOS3
 endif
 endif
 
+TESTS_TO_SKIP=
+OS3_INVOCATION=0
+
 ifeq ($(PLATFORM),MorphOS)
 SOFT=
 HARD=hard
@@ -29,8 +32,15 @@ endif
 ifeq ($(PLATFORM),AmigaOS3)
 SOFT=soft
 HARD=
+OS3_INVOCATION=1
 endif
 
+ifeq ($(PLATFORM),Mini)
+SOFT=soft
+HARD=
+TESTS_TO_SKIP=11,12,13,14,19,21,22,30,31,34,35,41,42,43,44,45,46,47,48,49,50,51,52,53,56
+OS3_INVOCATION=1
+endif
 
 ifeq ($(UNRAR),)
 test:
@@ -38,15 +48,15 @@ test:
 	@echo call: make test UNRAR=path_of_unrar_to_test
 else
 
-ifeq ($(PLATFORM),AmigaOS3)
+ifeq ($(OS3_INVOCATION),1)
 test:
 	setenv RAR_CODEPAGE=ISO-8859-2
-	@python run_test.py $(UNRAR)
-	
+	@python run_test.py $(UNRAR) $(TESTS_TO_SKIP)
+
 else
 		
 test:	
-	@RAR_CODEPAGE=ISO-8859-2 python run_test.py $(UNRAR)
+	@RAR_CODEPAGE=ISO-8859-2 python run_test.py $(UNRAR) $(TESTS_TO_SKIP)
 	
 endif
 endif

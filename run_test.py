@@ -103,8 +103,8 @@ if __name__ == "__main__":
    #parser.add_argument("--tmp_dir", help="temp directory when files will be unpacked - default is current dir")
    #args = parser.parse_args()
    
-   if len(sys.argv) != 2:
-      print("python run_test.py [path_to_unrar]")
+   if len(sys.argv) < 2 or len(sys.argv) > 3:
+      print("python run_test.py path_to_unrar [tests_to_skip]")
       exit(1)
    
    if os.path.exists(sys.argv[1]):
@@ -113,12 +113,16 @@ if __name__ == "__main__":
       
    else:
       print("%s not found" % sys.argv[1])
-      print("python run_test.py [path_to_unrar]")
+      print("python run_test.py path_to_unrar [tests_to_skip]")
       exit(2)
-
 
    os.system("version %s\n\n" % UNRAR)
    print("Codepage %s\n\n" % os.getenv("RAR_CODEPAGE"))
+
+   to_skip = []
+   if len(sys.argv) == 3:
+      to_skip = sys.argv[2].split(",")
+      print("Tests to skip: %s\n\n" % to_skip)
 
    try:
       if os.uname()[0] == "AROS":
@@ -158,19 +162,26 @@ if __name__ == "__main__":
    test_id = 1
    success = 0
    failures = 0
+   skipped = 0
    start_time = time.time()
    for test, desc in tests:
-      res = run_test(test_id, test, desc)
-      if res == 0:
-         success += 1
+      if str(test_id) in to_skip:
+         sys.stdout.write("\nTest %s    Skipped" % test_id)
+         sys.stdout.flush()
+         skipped += 1
       else:
-         failures += 1	  
+         res = run_test(test_id, test, desc)
+         if res == 0:
+            success += 1
+         else:
+            failures += 1
       test_id += 1
    
    
    print("\nDone\n")
    print("Tests successful: %d\n"%success)
    print("Tests failed: %d\n"%failures)
+   print("Tests skipped: %d\n"%skipped)
    print("Tests time: %ds\n" % (time.time() - start_time))
 
 
