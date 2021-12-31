@@ -122,7 +122,7 @@ if __name__ == "__main__":
    to_skip = []
    if len(sys.argv) == 3:
       to_skip = sys.argv[2].split(",")
-      print("Tests to skip: %s\n\n" % to_skip)
+      print("Tests to skip: %s\n\n" % ",".join(to_skip))
 
    try:
       if os.uname()[0] == "AROS":
