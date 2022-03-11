@@ -42,6 +42,11 @@ TESTS_TO_SKIP=11,12,13,14,19,21,22,30,31,34,35,41,42,43,44,45,46,47,48,49,50,51,
 OS3_INVOCATION=1
 endif
 
+ifeq ($(PROFILE),SFS)
+# SFS does not support hardlinks
+TESTS_TO_SKIP+=27,37,44
+endif
+
 ifeq ($(UNRAR),)
 test:
 	@echo unrar to test is not set
