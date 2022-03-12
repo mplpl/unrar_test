@@ -27,7 +27,7 @@ In total there are more than 50 tests, including test for extracting from:
 ## Requirements
 
 You can runs the test package on one of the following environments:
-* MorphOS 3.12
+* MorphOS 3.16
 * AmigaOS 4.1
 * AROS (i386)
 * AmigaOS 3.x
@@ -64,5 +64,5 @@ will use unrar command from home:documents/unrar_amiga directory.
 And that's it!
 
 The command will run all the tests and will show you execution progress and status of each test. 
-At the end, a sort summary is shown.
+At the end, a short summary is shown.
 
