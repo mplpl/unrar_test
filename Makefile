@@ -153,10 +153,9 @@ prepare:
 prepare_ram:
 	@makedir ram:unrar_test
 	@copy expected.lha ram:unrar_test
-	@copy tests ram:unrar_test/tests all
 	@copy Makefile ram:unrar_test
-	@copy run_test.py ram:unrar_test
 	$(MAKE) -C ram:unrar_test prepare
+	@rm ram:unrar_test/expected.lha
 
 clean:
 	-@rm -rf expected 

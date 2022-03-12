@@ -113,6 +113,7 @@ def compare_files(item1_path, item2_path, detailed):
    #   print("Wrong modification date of file %s: %s vs %s" % (item2_path, moddate1, moddate2))
    #   return 0
    if detailed:
+      # check file content
       cmd = ["diff", '"' + item1_path + '"', '"' + item2_path + '"']
       ret = os.system(" ".join(cmd))
       if ret != 0:
@@ -121,6 +122,7 @@ def compare_files(item1_path, item2_path, detailed):
    return 0
 
 def abspath(path, item):
+   # this is needed due to 'special' behaviour of Amiga relative symlinks
    dir = os.getcwd()
    os.chdir(path)
    target = os.readlink(item)
@@ -129,6 +131,7 @@ def abspath(path, item):
    return abs_target
 
 def exists(path, item):
+   # this is needed due to 'special' behaviour of Amiga relative symlinks
    dir = os.getcwd()
    os.chdir(path)
    ret = os.path.exists(item)
@@ -243,7 +246,7 @@ if __name__ == "__main__":
 
    SIMPLE_DIFF = os.getenv("SIMPLE_DIFF") == "1" or IS_M68K
    if SIMPLE_DIFF:
-      print("Runnin in 'SIMPLE_DIFF' mode\n\n")
+      print("Running in 'SIMPLE_DIFF' mode\n\n")
    to_test = []
    f = open("tests/params.lst")
    if f:
