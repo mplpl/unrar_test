@@ -42,21 +42,35 @@ TESTS_TO_SKIP=11,12,13,14,19,21,22,30,31,34,35,41,42,43,44,45,46,47,48,49,50,51,
 OS3_INVOCATION=1
 endif
 
+ifeq ($(PROFILE),SFS)
+# SFS does not support hardlinks
+TESTS_TO_SKIP+=27,37,44
+endif
+
 ifeq ($(UNRAR),)
 test:
+test_ram:
 	@echo unrar to test is not set
 	@echo call: make test UNRAR=path_of_unrar_to_test
+	
 else
 
 ifeq ($(OS3_INVOCATION),1)
 test:
 	setenv RAR_CODEPAGE=ISO-8859-2
-	@python run_test.py $(UNRAR) $(TESTS_TO_SKIP)
+	@python run_test.py $(UNRAR) . $(TESTS_TO_SKIP)
 
+test_ram:
+	setenv RAR_CODEPAGE=ISO-8859-2
+	@python run_test.py $(UNRAR) ram:unrar_test $(TESTS_TO_SKIP)
+	
 else
 		
-test:	
-	@RAR_CODEPAGE=ISO-8859-2 python run_test.py $(UNRAR) $(TESTS_TO_SKIP)
+test:
+	@RAR_CODEPAGE=ISO-8859-2 python run_test.py $(UNRAR) . $(TESTS_TO_SKIP)
+	
+test_ram:
+	@RAR_CODEPAGE=ISO-8859-2 python run_test.py $(UNRAR) ram:unrar_test $(TESTS_TO_SKIP)
 	
 endif
 endif
@@ -136,8 +150,16 @@ prepare:
 	@echo Done
 	-@rm -f unpack_expected.log
 
+prepare_ram:
+	@makedir ram:unrar_test
+	@copy expected.lha ram:unrar_test
+	@copy tests ram:unrar_test/tests all
+	@copy Makefile ram:unrar_test
+	@copy run_test.py ram:unrar_test
+	$(MAKE) -C ram:unrar_test prepare
+
 clean:
 	-@rm -rf expected 
 	-@rm -rf results 
-  
-.PHONY: test prepare clean
+
+.PHONY: test test_ram prepare prepare_ram clean

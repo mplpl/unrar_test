@@ -9,6 +9,8 @@ EXPECTED_DIR="expected"
 TMP_DIR="results"
 UNRAR = "unrar"
 IS_AROS = 0
+IS_M68K = 0
+SIMPLE_DIFF = 0
 
 
 def test_dir(test_id):
@@ -30,25 +32,115 @@ def call_unpack(test_id, unpack_args):
       return os.system(" ".join(cmd) + " >%s"%log)
 
 
-def compare(test_id):
+def compare(test_id, simple_diff):
    sys.stdout.write('.')
    sys.stdout.flush()
-
-   cmd = ["diff", "-r", "--exclude=test.log", os.path.join(
-      EXPECTED_DIR, test_dir(test_id)), os.path.join(TMP_DIR, test_dir(test_id))]
-   ret = os.system(" ".join(cmd))
-   if ret != 0:
-      print("Error in test (ret code %s)" % ret)
-   #else:
-   #  print("Test OK")
+   
+   path1 = os.path.join(EXPECTED_DIR, test_dir(test_id))
+   path2 = os.path.join(TMP_DIR, test_dir(test_id))
+   
+   if simple_diff:
+      ret = compare_dirs(path1, path2, 1)
+      if ret == 0:
+         ret = compare_dirs(path2, path1, 0)
+   else:
+      cmd = ["diff", "-r", "--exclude=test.log", path1, path2]
+      ret = os.system(" ".join(cmd))
+      if ret != 0:
+         print("Error in test (ret code %s)" % ret)
    return ret
 
+def compare_dirs(dir1, dir2, detailed):
+   if not os.path.exists(dir1):
+      print("%s does not exist" % dir1)
+      return 4
+   for item in os.listdir(dir1):
+      if item == "test.log":
+         continue
+      item1_path = os.path.join(dir1, item)
+      item2_path = os.path.join(dir2, item)
+      if not exists(dir2, item):
+         print("%s missing" % item2_path)
+         return 1
+      if os.path.islink(item1_path):
+         if not os.path.islink(item2_path):
+            print("%s should be a link" % item2_path)
+            return 5
+         target1 = abspath(dir1, item)
+         target2 = abspath(dir2, item)
+         if not os.path.exists(target1):
+            print("Broken link %s" %s)
+            return 6
+         if os.path.isdir(target1) and os.path.isdir(target2):
+            # both dirs
+            ret = compare_dirs(target1, target2, detailed)
+         if not os.path.isdir(target1) and not os.path.isdir(target2):
+            # both files
+            ret = compare_files(target1, target2, 0)
+         if ret != 0:
+            print("not ok %s" %ret)
+            return ret
+         continue
+      if os.path.isdir(item1_path):
+         if not os.path.isdir(item2_path):
+            print("%s should be a dir" % item2_path)
+            return 2
+         ret = compare_dirs(item1_path, item2_path, detailed)
+         if ret != 0:
+            print("not ok %s" %ret)
+            return ret
+         continue
+      # item is a file
+      if os.path.isdir(item2_path):
+         print("%s should be a file" % item2_path)
+         return 3
+      ret = compare_files(item1_path, item2_path, detailed)
+      if ret != 0:
+         return ret
+   return 0
 
+def compare_files(item1_path, item2_path, detailed):
+   # check files details
+   size1 = os.path.getsize(item1_path)
+   size2 = os.path.getsize(item2_path)
+   if size1 != size2:
+      print("Wrong size of file %s: %s vs %s" % (item2_path, size1, size2))
+      return 100
+   # modification date comparison does not work due to DST difference
+   #moddate1 = os.path.getmtime(item1_path)
+   #moddate2 = os.path.getmtime(item2_path)
+   #if abs(moddate1 - moddate2) > 1:
+   #   print("Wrong modification date of file %s: %s vs %s" % (item2_path, moddate1, moddate2))
+   #   return 0
+   if detailed:
+      cmd = ["diff", '"' + item1_path + '"', '"' + item2_path + '"']
+      ret = os.system(" ".join(cmd))
+      if ret != 0:
+         print("Error in test (ret code %s)" % ret)
+         return ret
+   return 0
+
+def abspath(path, item):
+   dir = os.getcwd()
+   os.chdir(path)
+   target = os.readlink(item)
+   abs_target = os.path.abspath(target)
+   os.chdir(dir)
+   return abs_target
+
+def exists(path, item):
+   dir = os.getcwd()
+   os.chdir(path)
+   ret = os.path.exists(item)
+   os.chdir(dir)
+   return ret
+   
 def clean_up(test_id):
    sys.stdout.write('.')
    sys.stdout.flush()
    try:
-      shutil.rmtree(os.path.join(TMP_DIR, test_dir(test_id)), ignore_errors=1)
+      if os.path.exists(os.path.join(TMP_DIR, test_dir(test_id))):
+         shutil.rmtree(os.path.join(TMP_DIR, test_dir(test_id)), ignore_errors=1)
    except Exception, e:
       print(e)
    return 0;
@@ -59,8 +151,8 @@ def make_static_file():
       os.mkdir(":tmp")
    if not os.path.exists(":tmp/1.txt"):
       open(":tmp/1.txt", "a").close()
-   if not os.path.exists("expected/2.txt"):
-      open("expected/2.txt", "a").close()
+   if not os.path.exists(os.path.join(EXPECTED_DIR, "2.txt")):
+      open(os.path.join(EXPECTED_DIR, "2.txt"), "a").close()
    if not os.path.exists(TMP_DIR):
       os.mkdir(TMP_DIR)
    if not os.path.exists(os.path.join(TMP_DIR, "2.txt")):
@@ -80,11 +172,13 @@ def run_test(test_id, unpack_args, desc):
    sys.stdout.write("\nTest %s" % test_id)
    sys.stdout.flush()
 
+   clean_up(test_id)
+
    if call_unpack(test_id, unpack_args) != 0:
       print(" [unpact error] ")
       print("\nTest decription: %s" % desc)
       return 1
-   ret = compare(test_id)
+   ret = compare(test_id, SIMPLE_DIFF)
 
    if ret == 0:
       if clean_up(test_id) !=0:
@@ -95,33 +189,44 @@ def run_test(test_id, unpack_args, desc):
          sys.stdout.flush()
    return ret
 
+def print_syntax_and_exit(exit_code):
+   print("python run_test.py path_to_unrar base_dir [tests_to_skip]")
+   exit(exit_code)
 
 if __name__ == "__main__":
-
+   
    #parser = argparse.ArgumentParser(description="Test runner")
    #parser.add_argument("--go", action="store_true", help="run tests")
    #parser.add_argument("--tmp_dir", help="temp directory when files will be unpacked - default is current dir")
    #args = parser.parse_args()
    
-   if len(sys.argv) < 2 or len(sys.argv) > 3:
-      print("python run_test.py path_to_unrar [tests_to_skip]")
-      exit(1)
+   if len(sys.argv) < 3 or len(sys.argv) > 4:
+      print_syntax_and_exit(1)
    
    if os.path.exists(sys.argv[1]):
       UNRAR = sys.argv[1]
       print("Using unrar command: %s" % UNRAR)
-      
    else:
       print("%s not found" % sys.argv[1])
-      print("python run_test.py path_to_unrar [tests_to_skip]")
-      exit(2)
+      print_syntax_and_exit(2)
+      
+   if sys.argv[2] == ".":
+      pass
+   elif os.path.exists(sys.argv[2]):
+      BASE_DIR = sys.argv[2]
+      print("Base dir: %s" % BASE_DIR)
+      EXPECTED_DIR = os.path.join(BASE_DIR, EXPECTED_DIR)
+      TMP_DIR = os.path.join(BASE_DIR, TMP_DIR)
+   else:
+      print("%s not found" % sys.argv[2])
+      print_syntax_and_exit(3)
 
    os.system("version %s\n\n" % UNRAR)
    print("Codepage %s\n\n" % os.getenv("RAR_CODEPAGE"))
 
    to_skip = []
-   if len(sys.argv) == 3:
-      to_skip = sys.argv[2].split(",")
+   if len(sys.argv) == 4:
+      to_skip = sys.argv[3].split(",")
       print("Tests to skip: %s\n\n" % ",".join(to_skip))
 
    try:
@@ -129,7 +234,16 @@ if __name__ == "__main__":
         IS_AROS = 1
    except:
       IS_AROS = 0
+      
+   try:
+      if os.uname()[4] == "m68k":
+        IS_M68K = 1
+   except:
+      IS_M68K = 0
 
+   SIMPLE_DIFF = os.getenv("SIMPLE_DIFF") == "1" or IS_M68K
+   if SIMPLE_DIFF:
+      print("Runnin in 'SIMPLE_DIFF' mode\n\n")
    to_test = []
    f = open("tests/params.lst")
    if f:
