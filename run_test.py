@@ -194,7 +194,7 @@ def run_test(test_id, unpack_args, desc):
 
 def print_syntax_and_exit(exit_code):
    print("python run_test.py path_to_unrar base_dir [tests_to_skip]")
-   exit(exit_code)
+   sys.exit(exit_code)
 
 if __name__ == "__main__":
    
